@@ -24,7 +24,8 @@ public class GenerateWordsListTask extends DefaultTask {
     public void generateWordsList() throws Exception {
         final List<File> inputTextFiles = new ArrayList<>();
         for (File it : inputFiles) {
-            if (it.getName().endsWith(".html") || it.getName().endsWith(".htm")) {
+//            if (it.getName().endsWith(".html") || it.getName().endsWith(".htm")) {
+            if (it.getName().endsWith(".html") || it.getName().endsWith(".htm") || it.getName().endsWith(".txt")) {
                 File wordsInputFile = File.createTempFile(it.getName() + "_stripped_html_", ".txt");
                 String inputText = Jsoup.parse(it, "UTF-8").text();
 

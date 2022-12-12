@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Keyboards>
+    <Keyboard
+        defaultDictionaryLocale="lat"
+        defaultEnabled="true"
+        description="@string/latin_keyboard_description"
+        iconResId="@drawable/ic_status_catalan"
+        id="d35a55ab-41cd-405c-b271-caee8c764203"
+        index="1"
+        layoutResId="@xml/latin_qwerty"
+        nameResId="@string/latin_keyboard"
+        physicalKeyboardMappingResId="@xml/english_physical"
+        additionalIsLetterExceptions="·-" />
+
+    <Keyboard
+        defaultDictionaryLocale="lat"
+        defaultEnabled="true"
+        description="@string/latin_keyboard_QWERTZ_description"
+        iconResId="@drawable/ic_status_catalan"
+        id="d35a55ab-41cd-405c-b271-caee8c764204"
+        index="2"
+        layoutResId="@xml/latin_qwertz"
+        nameResId="@string/latin_keyboard"
+        physicalKeyboardMappingResId="@xml/english_physical"
+        additionalIsLetterExceptions="·-" />
+
+    <Keyboard
+        defaultDictionaryLocale="lat"
+        defaultEnabled="true"
+        description="@string/latin_keyboard_QWERTZ_german_description"
+        iconResId="@drawable/ic_status_catalan"
+        id="d35a55ab-41cd-405c-b271-caee8c764205"
+        index="3"
+        layoutResId="@xml/latin_german_qwertz"
+        nameResId="@string/latin_keyboard"
+        physicalKeyboardMappingResId="@xml/english_physical"
+        additionalIsLetterExceptions="·-" />
+</Keyboards>

@@ -1,0 +1,6 @@
+<resources>
+    <string name="latin_keyboard">Keyboard Lingua Latīna</string>
+    <string name="latin_keyboard_description">Keyboard QWERTY</string>
+    <string name="latin_keyboard_QWERTZ_description">Keyboard QWERTZ</string>
+    <string name="latin_keyboard_QWERTZ_german_description">Keyboard QWERTZ German</string>
+</resources>
