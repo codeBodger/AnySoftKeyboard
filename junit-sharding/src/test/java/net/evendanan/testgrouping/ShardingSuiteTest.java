@@ -31,7 +31,7 @@ public class ShardingSuiteTest {
         Mockito.doReturn(Collections.<Runner>emptyList())
                 .when(runnerBuilder)
                 .runners(Mockito.any(Class.class), Mockito.any(Class[].class));
-        final ShardingSuite suiteUnderTest = new ShardingSuite(SuiteToTest.class, runnerBuilder);
+//        final ShardingSuite suiteUnderTest = new ShardingSuite(SuiteToTest.class, runnerBuilder);
         ArgumentCaptor<Class[]> testClasses = ArgumentCaptor.forClass(Class[].class);
         Mockito.verify(runnerBuilder).runners(Mockito.eq(SuiteToTest.class), testClasses.capture());
         mCapturedTestClasses = testClasses.getValue();
@@ -120,7 +120,7 @@ public class ShardingSuiteTest {
         Mockito.doReturn(Collections.<Runner>emptyList())
                 .when(runnerBuilder)
                 .runners(Mockito.any(Class.class), Mockito.any(Class[].class));
-        final ShardingSuite suiteUnderTest = new ShardingSuite(SuiteToTest.class, runnerBuilder);
+//        final ShardingSuite suiteUnderTest = new ShardingSuite(SuiteToTest.class, runnerBuilder);
         ArgumentCaptor<Class[]> testClasses = ArgumentCaptor.forClass(Class[].class);
         Mockito.verify(runnerBuilder).runners(Mockito.eq(SuiteToTest.class), testClasses.capture());
         mCapturedTestClasses = testClasses.getValue();
@@ -136,7 +136,7 @@ public class ShardingSuiteTest {
         Mockito.doReturn(Collections.<Runner>emptyList())
                 .when(runnerBuilder)
                 .runners(Mockito.any(Class.class), Mockito.any(Class[].class));
-        final ShardingSuite suiteUnderTest = new ShardingSuite(SuiteToTest.class, runnerBuilder);
+//        final ShardingSuite suiteUnderTest = new ShardingSuite(SuiteToTest.class, runnerBuilder);
         ArgumentCaptor<Class[]> testClasses = ArgumentCaptor.forClass(Class[].class);
         Mockito.verify(runnerBuilder).runners(Mockito.eq(SuiteToTest.class), testClasses.capture());
         mCapturedTestClasses = testClasses.getValue();
@@ -150,7 +150,7 @@ public class ShardingSuiteTest {
         Mockito.doReturn(Collections.<Runner>emptyList())
                 .when(runnerBuilder)
                 .runners(Mockito.any(Class.class), Mockito.any(Class[].class));
-        final ShardingSuite suiteUnderTest =
-                new ShardingSuite(SuiteToTestWithoutShardUsing.class, runnerBuilder);
+//        final ShardingSuite suiteUnderTest =
+//                new ShardingSuite(SuiteToTestWithoutShardUsing.class, runnerBuilder);
     }
 }
