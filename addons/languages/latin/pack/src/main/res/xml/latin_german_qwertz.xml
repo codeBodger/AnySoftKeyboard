@@ -3,7 +3,7 @@
 <Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ask="http://schemas.android.com/apk/res-auto"
     android:keyWidth="10%p"
-    android:keyHeight="@integer/key_short_height">
+    android:keyHeight="@integer/key_normal_height">
     <Row android:keyWidth="9.09%p">
         <Key android:codes="q" android:popupCharacters="+" ask:hintLabel="+" android:keyEdgeFlags="left"/>
         <Key android:codes="w" android:popupCharacters="×ŵ" ask:hintLabel="×"/>
