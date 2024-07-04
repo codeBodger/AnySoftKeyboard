@@ -1,3 +1,6 @@
+# From a file in the root directory, do Build > Build App Bundle(s) / APK(s) > Build APK(s)
+# Then look at something like addons/languages/latin/pack/build/outputs/apk/androidTest/debug/pack-debug-androidTest.apk
+
 AnySoftKeyboard&nbsp;[![Latest release](https://img.shields.io/github/release/AnySoftKeyboard/AnySoftKeyboard.svg)](https://github.com/AnySoftKeyboard/AnySoftKeyboard/releases)
 ====================
 Discussions can be found on&nbsp;[💬&nbsp;GitHub](https://github.com/AnySoftKeyboard/AnySoftKeyboard/discussions)<br/>
