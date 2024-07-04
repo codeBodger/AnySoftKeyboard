@@ -22,22 +22,12 @@ import android.content.Context;
 @TargetApi(28)
 public class ClipboardV28 extends ClipboardV16 {
 
-    ClipboardV28(Context context) {
-        super(context);
-    }
+  ClipboardV28(Context context) {
+    super(context);
+  }
 
-    @Override
-    public void deleteEntry(int entryIndex) {
-        mEntries.remove(entryIndex);
-        if (entryIndex == 0) {
-            // actually removing from clipboard
-            mClipboardManager.clearPrimaryClip();
-        }
-    }
-
-    @Override
-    public void deleteAllEntries() {
-        mEntries.clear();
-        mClipboardManager.clearPrimaryClip();
-    }
+  @Override
+  protected void clearPrimaryClip() {
+    mClipboardManager.clearPrimaryClip();
+  }
 }

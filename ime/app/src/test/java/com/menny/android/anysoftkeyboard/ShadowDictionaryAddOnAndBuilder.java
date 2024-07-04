@@ -16,35 +16,60 @@
 
 package com.menny.android.anysoftkeyboard;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 import androidx.test.core.app.ApplicationProvider;
 import com.anysoftkeyboard.dictionaries.Dictionary;
 import com.anysoftkeyboard.dictionaries.DictionaryAddOnAndBuilder;
 import com.anysoftkeyboard.dictionaries.InMemoryDictionary;
 import java.util.Arrays;
+import java.util.List;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Implementation;
 import org.robolectric.annotation.Implements;
 import org.robolectric.annotation.RealObject;
+import org.robolectric.shadow.api.Shadow;
 
 @Implements(
-        value = DictionaryAddOnAndBuilder.class,
-        isInAndroidSdk = false,
-        callThroughByDefault = true)
+    value = DictionaryAddOnAndBuilder.class,
+    isInAndroidSdk = false,
+    callThroughByDefault = true)
 public class ShadowDictionaryAddOnAndBuilder {
 
-    @RealObject DictionaryAddOnAndBuilder mOriginalBuilder;
+  @RealObject DictionaryAddOnAndBuilder mOriginalBuilder;
 
-    /** Shadows the native-dictionary creation. */
-    public Dictionary createDictionary() throws Exception {
-        return new InMemoryDictionary(
-                mOriginalBuilder.getName(),
-                ApplicationProvider.getApplicationContext(),
-                // frequencies were taken from the original English AOSP file.
-                Arrays.asList(
-                        Pair.create("he", 187),
-                        Pair.create("he'll", 94),
-                        Pair.create("hell", 108),
-                        Pair.create("hello", 120),
-                        Pair.create("face", 141)),
-                true);
-    }
+  @Nullable private List<Pair<String, Integer>> mOverrideDictionaryWords = null;
+
+  private static final List<Pair<String, Integer>> DEFAULT_WORDS =
+      Arrays.asList(
+          Pair.create("he", 187),
+          Pair.create("he'll", 94),
+          Pair.create("hell", 108),
+          Pair.create("hello", 120),
+          Pair.create("face", 141));
+
+  public static void setDictionaryOverrides(
+      @NonNull String dictionaryName, @Nullable List<Pair<String, Integer>> words) {
+    var builder =
+        AnyApplication.getExternalDictionaryFactory(RuntimeEnvironment.getApplication())
+            .getAllAddOns()
+            .stream()
+            .filter(d -> d.getName().equals(dictionaryName))
+            .findFirst()
+            .orElseThrow(() -> new RuntimeException("Failed to find dictionary " + dictionaryName));
+    var shadow = Shadow.<ShadowDictionaryAddOnAndBuilder>extract(builder);
+    shadow.mOverrideDictionaryWords = words;
+  }
+
+  /** Shadows the native-dictionary creation. */
+  @Implementation()
+  public Dictionary createDictionary() throws Exception {
+    return new InMemoryDictionary(
+        mOriginalBuilder.getName(),
+        ApplicationProvider.getApplicationContext(),
+        // frequencies were taken from the original English AOSP file.
+        mOverrideDictionaryWords == null ? DEFAULT_WORDS : mOverrideDictionaryWords,
+        true);
+  }
 }

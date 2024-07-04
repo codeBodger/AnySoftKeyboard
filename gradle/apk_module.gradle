@@ -28,43 +28,41 @@ static String calculateApplicationId(Project proj) {
 
 apply from: "${rootDir}/gradle/android_general.gradle"
 
-//copy bundles to output
-tasks.whenTaskAdded { task ->
-    if (task.name.startsWith("bundle") ||
-            (task.name.startsWith("publish") && task.name.endsWith("Bundle"))) {
-        def renameTaskName = "Copy${task.name.capitalize()}Aab"
-        def sourceFolder = file("${buildDir.absoluteFile}/outputs/bundle")
-        tasks.create(renameTaskName, Copy) {
-            from sourceFolder
-            include "**/*.aab"
-            destinationDir file("${rootDir.absolutePath}/outputs/bundle/${project.parent.name}")
-        }.doLast {
-            println("Copy bundles from ${sourceFolder.absolutePath} to ${it.getDestinationDir().absolutePath}...")
-        }
+//copy bundles and APKs to output
+android.applicationVariants.configureEach { variant ->
+    def bundleProvider = tasks.named("sign${variant.name.capitalize()}Bundle")
+    def bundleCopy = tasks.register("copy${variant.name.capitalize()}Aab", Copy)
+    bundleCopy.configure { copier ->
+        copier.from "${project.buildDir.absolutePath}/outputs/bundle/${variant.name}/${project.name}-${variant.name}.aab"
+        copier.destinationDir file("${rootDir.absolutePath}/outputs/bundle/")
+        copier.rename ".*", "${project.parent.name}_${variant.name}.aab"
+        copier.dependsOn bundleProvider
+    }
+    bundleProvider.configure {
+        finalizedBy(bundleCopy)
+    }
 
-        task.finalizedBy(renameTaskName)
+    def assembleProvider = tasks.named("assemble${variant.name.capitalize()}")
+    def apkCopy = tasks.register("copy${variant.name.capitalize()}Apk", Copy)
+    apkCopy.configure { copier ->
+        copier.from "${project.buildDir.absolutePath}/outputs/apk/${variant.name}/${project.name}-${variant.name}.apk"
+        copier.destinationDir file("${rootDir.absolutePath}/outputs/apk/")
+        copier.rename ".*", "${project.parent.name}_${variant.name}.apk"
+        copier.dependsOn assembleProvider
+    }
+    assembleProvider.configure {
+        finalizedBy(apkCopy)
     }
 }
+
+group calculateApplicationId(project)
 
 android {
     defaultConfig {
         applicationId calculateApplicationId(project)
     }
 
-    //copy apks to outputs
-    applicationVariants.configureEach { variant ->
-        variant.outputs.all {
-            outputFileName = "${project.path.substring(1).replace(':', '-')}-${android.defaultConfig.versionCode}.apk"
-        }
-        variant.assembleProvider.configure { assemble ->
-            assemble.doLast {
-                copy {
-                    from variant.outputs*.outputFile
-                    into "${rootDir.absolutePath}/outputs/apks/${variant.dirName}/"
-                }
-            }
-        }
-    }
+    namespace calculateApplicationId(project)
 
     def keystoreFile = file("/tmp/anysoftkeyboard.keystore")
 
@@ -128,11 +126,23 @@ if (project.ext.shouldBePublished && !publishingTrack.isEmpty()) {
     }
 
     if (playStoreWhatsNewFile.text.length() > 500) {
-        println("Locale " + Locale.getDefault())
-        println("file encoding " + CharsetToolkit.defaultSystemCharset)
+        println("Locale ${Locale.getDefault()}")
+        println("file encoding ${CharsetToolkit.defaultSystemCharset}")
         println("File contents:")
-        println("***" + playStoreWhatsNewFile.text + "***")
-        throw new IllegalStateException("whatsnew file can not be longer than 500 characters! Currently " + playStoreWhatsNewFile.text.length())
+        println("***${playStoreWhatsNewFile.text}***")
+        throw new IllegalStateException("whatsnew file can not be longer than 500 characters! Currently ${playStoreWhatsNewFile.text.length()}")
+    }
+} else {
+    // creating fake Play tasks to support CI all tasks checks
+    tasks.register("generateReleasePlayResources").configure {
+        doLast {
+            println("running fake ${it.path}")
+        }
+    }
+    tasks.register("generateCanaryPlayResources").configure {
+        doLast {
+            println("running fake ${it.path}")
+        }
     }
 }
 
